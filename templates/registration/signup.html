@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow mt-5">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">新規登録 (Sign Up)</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {{ form.as_p }}
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-success">登録する</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                すでにアカウントをお持ちですか？ <a href="{% url 'login' %}">ログインはこちら</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card shadow border-0 bg-primary text-white h-100">
+            <div class="card-body">
+                <h5 class="card-title">📊 あなたの身体データ</h5>
+                <hr class="text-white-50">
+                <p class="mb-1">基礎代謝 (BMR):</p>
+                <h3 class="fw-bold">{{ bmr }} <small class="fs-6">kcal/日</small></h3>
+                
+                <p class="mb-1 mt-3">推奨摂取カロリー:</p>
+                <h3 class="fw-bold">{{ suggested_cal }} <small class="fs-6">kcal</small></h3>
+                <small class="text-white-50">*ダイエット目標に基づいて計算</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0">運動記録</h4>
+            <a href="{% url 'add_exercise' %}" class="btn btn-success">
+                + 運動を記録
+            </a>
+        </div>
+
+        <div class="card shadow border-0">
+            <div class="list-group list-group-flush">
+                {% for exercise in exercises %}
+                    <div class="list-group-item p-3">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">
+                                    {% if exercise.exercise_type == 'running' %}ランニング
+                                    {% elif exercise.exercise_type == 'swimming' %}水泳
+                                    {% elif exercise.exercise_type == 'cycling' %}サイクリング
+                                    {% elif exercise.exercise_type == 'walking' %}ウォーキング
+                                    {% elif exercise.exercise_type == 'yoga' %}ヨガ
+                                    {% elif exercise.exercise_type == 'weightlifting' %}筋トレ
+                                    {% else %}{{ exercise.exercise_type }}
+                                    {% endif %}
+                                </h5>
+                                <small class="text-muted">
+                                    記録日時: {{ exercise.created_at|date:"Y-n-j H:i" }}
+                                </small>
+                            </div>
+                            
+                            <div class="text-end">
+                                <span class="badge bg-info text-dark rounded-pill fs-6 mb-1">
+                                    {{ exercise.duration_minutes }} 分
+                                </span>
+                                <div class="text-muted small">
+                                    約 <strong>{{ exercise.calories_burned }}</strong> kcal 消費
+                                </div>
+                            </div>
+
+                            <div class="ms-3 border-start ps-3">
+                                <a href="{% url 'edit_exercise' exercise.pk %}" class="btn btn-sm btn-outline-primary mb-1 d-block">編集</a>
+                                <a href="{% url 'delete_exercise' exercise.pk %}" class="btn btn-sm btn-outline-danger d-block">削除</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="text-center p-5 text-muted">
+                        <p class="mb-0">まだ運動記録がありません。さあ、運動しましょう！</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

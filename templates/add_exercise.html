@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    {% if exercise %}运动記録を編集 (Edit){% else %}新しい運動を記録 (Add New){% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">運動の種類</label>
+                        <select name="type" class="form-select" required>
+                            <option value="running" {% if exercise.exercise_type == 'running' %}selected{% endif %}>ランニング (Running)</option>
+                            <option value="swimming" {% if exercise.exercise_type == 'swimming' %}selected{% endif %}>水泳 (Swimming)</option>
+                            <option value="cycling" {% if exercise.exercise_type == 'cycling' %}selected{% endif %}>サイクリング (Cycling)</option>
+                            <option value="walking" {% if exercise.exercise_type == 'walking' %}selected{% endif %}>ウォーキング (Walking)</option>
+                            <option value="yoga" {% if exercise.exercise_type == 'yoga' %}selected{% endif %}>ヨガ (Yoga)</option>
+                            <option value="weightlifting" {% if exercise.exercise_type == 'weightlifting' %}selected{% endif %}>筋トレ (Weightlifting)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">時間 (分)</label>
+                        <input type="number" name="duration" class="form-control" 
+                               value="{{ exercise.duration_minutes|default:'' }}" 
+                               placeholder="例: 30" required>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">保存する</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary">キャンセル</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
